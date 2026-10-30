@@ -105,6 +105,9 @@ const modalPrice = document.getElementById("modal-price");
 
 const addToCartButton = document.getElementById("add-to-cart");
 
+const cartModal = document.getElementById("cart-modal");
+const cartClose = document.getElementById("cart-close");
+
 // =====================================
 // 3. ESTADO DA APLICAÇÃO
 // =====================================
