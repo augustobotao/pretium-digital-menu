@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Explore o menu digital da Maison Gourmet."
+    />
+
+    <title>Maison Gourmet | Menu Digital</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- CABEÇALHO -->
+    <header class="header">
+      <a href="#" class="logo">
+        <span class="logo-symbol">M.</span>
+        <span class="logo-name">MAISON GOURMET</span>
+      </a>
+
+      <div class="header-actions">
+        <button class="icon-button" aria-label="Pesquisar">⌕</button>
+
+        <button class="cart-button" id="cart-button">
+          Carrinho <span id="cart-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- DESTAQUE PRINCIPAL -->
+    <main>
+      <section class="hero">
+        <div class="hero-content">
+          <span class="eyebrow">EXPERIÊNCIA GASTRONÓMICA</span>
+
+          <h1>
+            Uma experiência
+            <em>para recordar.</em>
+          </h1>
+
+          <p>
+            Descubra sabores cuidadosamente preparados para transformar cada
+            momento numa experiência.
+          </p>
+
+          <a href="#menu" class="hero-button"> EXPLORAR MENU <span>↗</span> </a>
+        </div>
+
+        <div class="hero-image">
+          <div class="image-placeholder">
+            <span>Fotografia de destaque</span>
+          </div>
+        </div>
+
+        <div class="hero-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </section>
+
+      <!-- CONTEÚDO DO MENU -->
+      <section class="menu-section" id="menu">
+        <div class="menu-top">
+          <div>
+            <span class="eyebrow">A NOSSA SELEÇÃO</span>
+            <h2>O Menu</h2>
+          </div>
+
+          <span class="menu-note">Preparado com dedicação.</span>
+        </div>
+
+        <!-- PESQUISA -->
+        <div class="search-area">
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Procure o seu prato favorito..."
+          />
+          <span>⌕</span>
+        </div>
+
+        <!-- CATEGORIAS -->
+        <nav class="categories" id="categories">
+          <button class="category active" data-category="todos">Todos</button>
+
+          <button class="category" data-category="entradas">Entradas</button>
+
+          <button class="category" data-category="principais">
+            Pratos principais
+          </button>
+
+          <button class="category" data-category="peixes">Peixes</button>
+
+          <button class="category" data-category="carnes">Carnes</button>
+
+          <button class="category" data-category="sobremesas">
+            Sobremesas
+          </button>
+        </nav>
+
+        <!-- PRATOS -->
+        <div class="section-heading">
+          <h3>Especialidades da casa</h3>
+          <span>DESCUBRA A NOSSA SELEÇÃO</span>
+        </div>
+
+        <div class="dishes-grid" id="dishes-grid">
+          <!-- Os pratos serão inseridos pelo JavaScript -->
+        </div>
+      </section>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+      <div class="footer-brand">MAISON GOURMET</div>
+      <p>Uma experiência gastronómica à sua espera.</p>
+      <span>Menu demonstrativo · PRETIUM IA Solutions</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
