@@ -108,6 +108,11 @@ const addToCartButton = document.getElementById("add-to-cart");
 const cartModal = document.getElementById("cart-modal");
 const cartClose = document.getElementById("cart-close");
 
+const cartButton = document.getElementById("cart-button");
+
+const cartItemsContainer = document.getElementById("cart-items");
+const cartTotalElement = document.getElementById("cart-total");
+
 // =====================================
 // 3. ESTADO DA APLICAÇÃO
 // =====================================
@@ -253,21 +258,36 @@ searchInput.addEventListener("input", () => {
 // 8. CARRINHO SIMPLES
 // =====================================
 
-function addToCart(dishId) {
-  const selectedDish = dishes.find((dish) => dish.id === dishId);
+// function addToCart(dishId) {
+//   const selectedDish = dishes.find((dish) => dish.id === dishId);
 
-  if (!selectedDish) return;
+//   if (!selectedDish) return;
 
-  const existingItem = cart.find((item) => item.id === dishId);
+//   const existingItem = cart.find((item) => item.id === dishId);
 
-  if (existingItem) {
-    existingItem.quantity++;
-  } else {
-    cart.push({
-      ...selectedDish,
-      quantity: 1,
-    });
-  }
+//   if (existingItem) {
+//     existingItem.quantity++;
+//   } else {
+//     cart.push({
+//       ...selectedDish,
+//       quantity: 1,
+//     });
+//   }
+
+//   updateCart();
+// }
+
+function addToCart(dish, quantity, portion, unitPrice, notes) {
+  if (!dish) return;
+
+  cart.push({
+    ...dish,
+    cartId: Date.now(),
+    quantity: quantity,
+    portion: portion,
+    unitPrice: unitPrice,
+    notes: notes,
+  });
 
   updateCart();
 }
@@ -276,10 +296,101 @@ function addToCart(dishId) {
 // 9. ATUALIZAR CONTADOR
 // =====================================
 
+// function updateCart() {
+//   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+
+//   document.getElementById("cart-count").textContent = totalItems;
+// }
+
 function updateCart() {
+  // 1. Atualizar o contador do cabeçalho
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   document.getElementById("cart-count").textContent = totalItems;
+
+  // 2. Verificar se o carrinho está vazio
+  if (cart.length === 0) {
+    cartItemsContainer.innerHTML = `
+            <p>O teu carrinho está vazio.</p>
+        `;
+
+    cartTotalElement.textContent = "0 MT";
+    return;
+  }
+
+  // 3. Mostrar os produtos adicionados
+  cartItemsContainer.innerHTML = cart
+    .map(
+      (item) => `
+        <div class="cart-item">
+            <div>
+            <h3>${item.name}</h3>
+            <p>${item.portion}</p>
+            <div class="cart-quantity">
+              <button class="decrease-quantity" data-id="${item.cartId}">−</button>
+              <span>${item.quantity}</span>
+              <button class="increase-quantity" data-id="${item.cartId}">+</button>
+            </div>
+            <p>${item.notes || "Sem observações"}</p>
+
+            <button class="remove-item" data-id="${item.cartId}">
+              Remover
+            </button>
+            </div>
+
+            <strong>
+                ${(item.unitPrice * item.quantity).toLocaleString("pt-PT")} MT
+            </strong>
+        </div>
+    `,
+    )
+    .join("");
+
+  // 4. Calcular o total da encomenda
+  const total = cart.reduce(
+    (sum, item) => sum + item.unitPrice * item.quantity,
+    0,
+  );
+
+  cartTotalElement.textContent = total.toLocaleString("pt-PT") + " MT";
+
+  // Remover produtos do carrinho
+  document.querySelectorAll(".remove-item").forEach((button) => {
+    button.addEventListener("click", () => {
+      const cartId = Number(button.dataset.id);
+
+      cart = cart.filter((item) => item.cartId !== cartId);
+
+      updateCart();
+    });
+  });
+  // Aumentar quantidade
+  document.querySelectorAll(".increase-quantity").forEach((button) => {
+    button.addEventListener("click", () => {
+      const cartId = Number(button.dataset.id);
+
+      const item = cart.find((item) => item.cartId === cartId);
+
+      if (item) {
+        item.quantity++;
+        updateCart();
+      }
+    });
+  });
+
+  // Diminuir quantidade
+  document.querySelectorAll(".decrease-quantity").forEach((button) => {
+    button.addEventListener("click", () => {
+      const cartId = Number(button.dataset.id);
+
+      const item = cart.find((item) => item.cartId === cartId);
+
+      if (item && item.quantity > 1) {
+        item.quantity--;
+        updateCart();
+      }
+    });
+  });
 }
 
 // =====================================
@@ -290,16 +401,19 @@ portionSelect.addEventListener("change", updateModalPrice);
 
 quantityInput.addEventListener("input", updateModalPrice);
 
+// Fechar janela dos detalhes
 modalClose.addEventListener("click", () => {
   dishModal.classList.remove("active");
 });
 
+// Fechar detalhes ao clicar fora
 dishModal.addEventListener("click", (event) => {
   if (event.target === dishModal) {
     dishModal.classList.remove("active");
   }
 });
 
+// Adicionar prato ao carrinho
 addToCartButton.addEventListener("click", () => {
   if (!selectedDish) return;
 
@@ -312,7 +426,7 @@ addToCartButton.addEventListener("click", () => {
   const unitPrice = selectedDish.price * multiplier;
 
   addToCart(
-    selectedDish.id,
+    selectedDish,
     quantity,
     portionLabel,
     unitPrice,
@@ -322,4 +436,15 @@ addToCartButton.addEventListener("click", () => {
   dishModal.classList.remove("active");
 });
 
+// Abrir carrinho
+cartButton.addEventListener("click", () => {
+  cartModal.classList.add("active");
+});
+
+// Fechar carrinho
+cartClose.addEventListener("click", () => {
+  cartModal.classList.remove("active");
+});
+
+// Iniciar apresentação dos pratos
 renderDishes();
