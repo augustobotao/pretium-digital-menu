@@ -116,6 +116,57 @@
       </section>
     </main>
 
+    <!-- MODAL DE DETALHES DO PRATO -->
+
+    <div class="dish-modal" id="dish-modal">
+      <div class="modal-content">
+        <button class="modal-close" id="modal-close">&times;</button>
+
+        <div class="modal-image" id="modal-image">Fotografia do prato</div>
+
+        <div class="modal-info">
+          <span class="eyebrow">ESPECIALIDADE DA CASA</span>
+
+          <h2 id="modal-name">Nome do prato</h2>
+
+          <p id="modal-description"></p>
+
+          <h3>Ingredientes</h3>
+          <p id="modal-ingredients"></p>
+
+          <h3>Preparação</h3>
+          <p id="modal-preparation"></p>
+
+          <label for="portion">Escolha a porção</label>
+
+          <select id="portion">
+            <option value="1">Normal</option>
+            <option value="1.5">Grande (+50%)</option>
+          </select>
+
+          <label for="quantity">Quantidade</label>
+
+          <input type="number" id="quantity" min="1" value="1" />
+
+          <label for="notes">Observações</label>
+
+          <textarea
+            id="notes"
+            placeholder="Ex.: Pouco sal, sem piripiri..."
+          ></textarea>
+
+          <div class="modal-total">
+            <span>Total</span>
+            <strong id="modal-price">0 MT</strong>
+          </div>
+
+          <button id="add-to-cart" class="add-button">
+            ADICIONAR AO PEDIDO
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- RODAPÉ -->
     <footer class="footer">
       <div class="footer-brand">MAISON GOURMET</div>
