@@ -33,16 +33,18 @@
 
     <!-- DESTAQUE PRINCIPAL -->
     <main>
-      <section class="hero">
+      <section class="hero" id="hero-carousel">
         <div class="hero-content">
-          <span class="eyebrow">EXPERIÊNCIA GASTRONÓMICA</span>
+          <span class="eyebrow" id="hero-eyebrow">
+            EXPERIÊNCIA GASTRONÓMICA
+          </span>
 
           <h1>
-            Uma experiência
-            <em>para recordar.</em>
+            <span id="hero-title-main">Uma experiência</span>
+            <em id="hero-title-em">para recordar.</em>
           </h1>
 
-          <p>
+          <p id="hero-description">
             Descubra sabores cuidadosamente preparados para transformar cada
             momento numa experiência.
           </p>
@@ -51,16 +53,20 @@
         </div>
 
         <div class="hero-image">
-          <div class="image-placeholder">
-            <span>Fotografia de destaque</span>
+          <div class="image-placeholder" id="hero-image">
+            <span id="hero-image-label">Fotografia de destaque</span>
           </div>
         </div>
 
-        <div class="hero-indicator">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+        <div class="hero-indicator" id="hero-indicator">
+          <button
+            class="active"
+            data-slide="0"
+            aria-label="Destaque 1"
+          ></button>
+          <button data-slide="1" aria-label="Destaque 2"></button>
+          <button data-slide="2" aria-label="Destaque 3"></button>
+          <button data-slide="3" aria-label="Destaque 4"></button>
         </div>
       </section>
 
@@ -167,41 +173,37 @@
       </div>
     </div>
 
-    
-<!-- CARRINHO DE COMPRAS -->
-<div class="cart-modal" id="cart-modal">
-
-    <div class="cart-content">
-
+    <!-- CARRINHO DE COMPRAS -->
+    <div class="cart-modal" id="cart-modal">
+      <div class="cart-content">
         <div class="cart-header">
-            <h2>O teu pedido</h2>
-            <button id="cart-close">&times;</button>
+          <h2>O teu pedido</h2>
+          <button id="cart-close">&times;</button>
         </div>
 
         <div class="cart-items" id="cart-items">
-            <p>O teu carrinho está vazio.</p>
+          <p>O teu carrinho está vazio.</p>
         </div>
 
         <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total</span>
-                <strong id="cart-total">0 MT</strong>
-            </div>
+          <div class="cart-total">
+            <span>Total</span>
+            <strong id="cart-total">0 MT</strong>
+          </div>
 
-            <button id="checkout-button">
-                FINALIZAR PEDIDO
-            </button>
+          <button id="checkout-button">FINALIZAR PEDIDO</button>
         </div>
-
+      </div>
     </div>
-
-</div>
 
     <!-- RODAPÉ -->
     <footer class="footer">
       <div class="footer-brand">MAISON GOURMET</div>
       <p>Uma experiência gastronómica à sua espera.</p>
-      <span>Menu demonstrativo · PRETIUM IA Solutions</span>
+      <span
+        >Menu demonstrativo · PRETIUM <br />
+        Por Augusto Botão</span
+      >
     </footer>
 
     <script src="script.js"></script>

@@ -122,7 +122,27 @@ let selectedCategory = "todos";
 
 let searchTerm = "";
 
-let cart = JSON.parse(localStorage.getItem("maison-cart")) || [];
+// Recuperar carrinho com segurança
+let cart = [];
+
+try {
+  const savedCart = JSON.parse(localStorage.getItem("maison-cart"));
+
+  if (Array.isArray(savedCart)) {
+    cart = savedCart.filter(
+      (item) =>
+        item &&
+        typeof item.cartId === "number" &&
+        typeof item.name === "string" &&
+        typeof item.quantity === "number" &&
+        item.quantity >= 1 &&
+        typeof item.unitPrice === "number",
+    );
+  }
+} catch (error) {
+  console.error("Erro ao recuperar o carrinho:", error);
+  localStorage.removeItem("maison-cart");
+}
 
 let selectedDish = null;
 
@@ -272,6 +292,7 @@ function addToCart(dish, quantity, portion, unitPrice, notes) {
   });
 
   updateCart();
+  showToast(`${dish.name} adicionado ao carrinho!`);
 }
 
 // =====================================
@@ -471,6 +492,130 @@ function checkout() {
     );
   }
 }
+
+function showToast(message) {
+  const toast = document.createElement("div");
+
+  toast.className = "toast";
+  toast.textContent = message;
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add("show");
+  }, 10);
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+  }, 2500);
+}
+
+// =====================================
+// CARROSSEL DE DESTAQUES
+// =====================================
+
+const heroSlides = [
+  {
+    eyebrow: "EXPERIÊNCIA GASTRONÓMICA",
+    title: "Uma experiência",
+    emphasis: "para recordar.",
+    description:
+      "Descubra sabores cuidadosamente preparados para transformar cada momento numa experiência.",
+    imageLabel: "Uma experiência gastronómica",
+  },
+  {
+    eyebrow: "SABORES AUTÊNTICOS",
+    title: "A tradição",
+    emphasis: "em cada prato.",
+    description:
+      "Explore ingredientes seleccionados e sabores que celebram a riqueza da gastronomia.",
+    imageLabel: "Sabores autênticos",
+  },
+  {
+    eyebrow: "ARTE À MESA",
+    title: "Mais do que",
+    emphasis: "uma refeição.",
+    description:
+      "Cada detalhe é pensado para proporcionar momentos especiais e memoráveis.",
+    imageLabel: "Arte e sofisticação",
+  },
+  {
+    eyebrow: "O PRAZER DE RECEBER",
+    title: "O seu próximo",
+    emphasis: "momento especial.",
+    description:
+      "Descubra o prazer de partilhar boa comida, num ambiente de elegância e sabor.",
+    imageLabel: "Momentos especiais",
+  },
+];
+
+const heroEyebrow = document.getElementById("hero-eyebrow");
+const heroTitleMain = document.getElementById("hero-title-main");
+const heroTitleEm = document.getElementById("hero-title-em");
+const heroDescription = document.getElementById("hero-description");
+const heroImageLabel = document.getElementById("hero-image-label");
+const heroIndicator = document.getElementById("hero-indicator");
+const heroCarousel = document.getElementById("hero-carousel");
+
+let currentSlide = 0;
+let heroInterval;
+
+function showHeroSlide(index) {
+  currentSlide = index;
+
+  const slide = heroSlides[currentSlide];
+
+  heroEyebrow.textContent = slide.eyebrow;
+  heroTitleMain.textContent = slide.title;
+  heroTitleEm.textContent = slide.emphasis;
+  heroDescription.textContent = slide.description;
+  heroImageLabel.textContent = slide.imageLabel;
+
+  const dots = heroIndicator.querySelectorAll("button");
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle("active", i === currentSlide);
+  });
+}
+
+function startHeroCarousel() {
+  clearInterval(heroInterval);
+
+  heroInterval = setInterval(() => {
+    const nextSlide = (currentSlide + 1) % heroSlides.length;
+    showHeroSlide(nextSlide);
+  }, 3000);
+}
+
+heroIndicator.querySelectorAll("button").forEach((button) => {
+  button.addEventListener("click", () => {
+    const index = Number(button.dataset.slide);
+
+    showHeroSlide(index);
+    startHeroCarousel();
+  });
+});
+
+// Pausar quando o utilizador interagir
+heroCarousel.addEventListener("mouseenter", () => {
+  clearInterval(heroInterval);
+});
+
+heroCarousel.addEventListener("mouseleave", startHeroCarousel);
+
+heroCarousel.addEventListener("focusin", () => {
+  clearInterval(heroInterval);
+});
+
+heroCarousel.addEventListener("focusout", startHeroCarousel);
+
+// Iniciar carrossel
+showHeroSlide(0);
+startHeroCarousel();
 
 // Iniciar apresentação dos pratos
 renderDishes();
