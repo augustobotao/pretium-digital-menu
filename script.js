@@ -112,6 +112,7 @@ const cartButton = document.getElementById("cart-button");
 
 const cartItemsContainer = document.getElementById("cart-items");
 const cartTotalElement = document.getElementById("cart-total");
+const checkoutButton = document.getElementById("checkout-button");
 
 // =====================================
 // 3. ESTADO DA APLICAÇÃO
@@ -121,7 +122,7 @@ let selectedCategory = "todos";
 
 let searchTerm = "";
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("maison-cart")) || [];
 
 let selectedDish = null;
 
@@ -258,25 +259,6 @@ searchInput.addEventListener("input", () => {
 // 8. CARRINHO SIMPLES
 // =====================================
 
-// function addToCart(dishId) {
-//   const selectedDish = dishes.find((dish) => dish.id === dishId);
-
-//   if (!selectedDish) return;
-
-//   const existingItem = cart.find((item) => item.id === dishId);
-
-//   if (existingItem) {
-//     existingItem.quantity++;
-//   } else {
-//     cart.push({
-//       ...selectedDish,
-//       quantity: 1,
-//     });
-//   }
-
-//   updateCart();
-// }
-
 function addToCart(dish, quantity, portion, unitPrice, notes) {
   if (!dish) return;
 
@@ -296,14 +278,9 @@ function addToCart(dish, quantity, portion, unitPrice, notes) {
 // 9. ATUALIZAR CONTADOR
 // =====================================
 
-// function updateCart() {
-//   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-
-//   document.getElementById("cart-count").textContent = totalItems;
-// }
-
 function updateCart() {
   // 1. Atualizar o contador do cabeçalho
+  localStorage.setItem("maison-cart", JSON.stringify(cart));
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   document.getElementById("cart-count").textContent = totalItems;
@@ -446,5 +423,55 @@ cartClose.addEventListener("click", () => {
   cartModal.classList.remove("active");
 });
 
+// Finalizar pedido
+checkoutButton.addEventListener("click", checkout);
+
+// Finalizar pedido pelo WhatsApp
+function checkout() {
+  if (cart.length === 0) {
+    alert("O teu carrinho está vazio!");
+    return;
+  }
+
+  let message = "Olá, MAISON GOURMET! Gostaria de fazer o seguinte pedido:\n\n";
+
+  cart.forEach((item, index) => {
+    message += `${index + 1}. ${item.name}\n`;
+    message += `   Porção: ${item.portion}\n`;
+    message += `   Quantidade: ${item.quantity}\n`;
+    message += `   Subtotal: ${formatPrice(item.unitPrice * item.quantity)}\n`;
+
+    if (item.notes) {
+      message += `   Observações: ${item.notes}\n`;
+    }
+
+    message += "\n";
+  });
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.unitPrice * item.quantity,
+    0,
+  );
+
+  message += `TOTAL DO PEDIDO: ${formatPrice(total)}\n\n`;
+  message += "Aguardo a confirmação. Obrigado!";
+
+  const phone = "258860215520";
+  const whatsappURL = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+  const whatsappWindow = window.open(whatsappURL, "_blank");
+
+  if (whatsappWindow) {
+    cart = [];
+    updateCart();
+    cartModal.classList.remove("active");
+  } else {
+    alert(
+      "Não foi possível abrir o WhatsApp. Verifica se o navegador bloqueou a janela.",
+    );
+  }
+}
+
 // Iniciar apresentação dos pratos
 renderDishes();
+updateCart();
