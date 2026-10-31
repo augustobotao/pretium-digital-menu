@@ -526,6 +526,7 @@ const heroSlides = [
     description:
       "Descubra sabores cuidadosamente preparados para transformar cada momento numa experiência.",
     imageLabel: "Uma experiência gastronómica",
+    image: "images/hero-1.jpg",
   },
   {
     eyebrow: "SABORES AUTÊNTICOS",
@@ -534,6 +535,7 @@ const heroSlides = [
     description:
       "Explore ingredientes seleccionados e sabores que celebram a riqueza da gastronomia.",
     imageLabel: "Sabores autênticos",
+    image: "images/hero-2.jpg",
   },
   {
     eyebrow: "ARTE À MESA",
@@ -542,6 +544,7 @@ const heroSlides = [
     description:
       "Cada detalhe é pensado para proporcionar momentos especiais e memoráveis.",
     imageLabel: "Arte e sofisticação",
+    image: "images/hero-3.jpg",
   },
   {
     eyebrow: "O PRAZER DE RECEBER",
@@ -550,6 +553,7 @@ const heroSlides = [
     description:
       "Descubra o prazer de partilhar boa comida, num ambiente de elegância e sabor.",
     imageLabel: "Momentos especiais",
+    image: "images/hero-4.jpg",
   },
 ];
 
@@ -558,6 +562,7 @@ const heroTitleMain = document.getElementById("hero-title-main");
 const heroTitleEm = document.getElementById("hero-title-em");
 const heroDescription = document.getElementById("hero-description");
 const heroImageLabel = document.getElementById("hero-image-label");
+const heroImage = document.getElementById("hero-image");
 const heroIndicator = document.getElementById("hero-indicator");
 const heroCarousel = document.getElementById("hero-carousel");
 
@@ -574,6 +579,12 @@ function showHeroSlide(index) {
   heroTitleEm.textContent = slide.emphasis;
   heroDescription.textContent = slide.description;
   heroImageLabel.textContent = slide.imageLabel;
+  heroImage.classList.add("changing");
+
+  setTimeout(() => {
+    heroImage.style.backgroundImage = `url('${slide.image}')`;
+    heroImage.classList.remove("changing");
+  }, 250);
 
   const dots = heroIndicator.querySelectorAll("button");
 
@@ -588,7 +599,7 @@ function startHeroCarousel() {
   heroInterval = setInterval(() => {
     const nextSlide = (currentSlide + 1) % heroSlides.length;
     showHeroSlide(nextSlide);
-  }, 3000);
+  }, 5000);
 }
 
 heroIndicator.querySelectorAll("button").forEach((button) => {

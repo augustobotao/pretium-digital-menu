@@ -955,3 +955,39 @@ a {
   opacity: 1;
   transform: translate(-50%, 0);
 }
+
+/* FOTOGRAFIAS DO CARROSSEL */
+
+.image-placeholder {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+  transition: background-image 0.4s ease;
+  transition: opacity 0.4s ease;
+}
+
+.image-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.15), transparent);
+  pointer-events: none;
+}
+
+.image-placeholder span {
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+/* TRANSIÇÃO DAS FOTOGRAFIAS DO HERO */
+
+.image-placeholder {
+    transition: opacity 0.5s ease;
+}
+
+.image-placeholder.changing {
+    opacity: 0.3;
+}
