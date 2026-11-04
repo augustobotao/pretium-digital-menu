@@ -9,6 +9,7 @@ const dishes = [
     category: "principais",
     description: "Folhas de mandioca, leite de coco e camarão.",
     price: 850,
+    image: "images/camarao_a_zambeziana.jpg",
 
     ingredients: [
       "Folhas de mandioca",
@@ -223,6 +224,7 @@ function renderDishes() {
     card.innerHTML = `
             <div class="dish-image">
                 <span>${dish.name}</span>
+                <img src="${dish.image}" alt="${dish.name}">
             </div>
 
             <div class="dish-info">
